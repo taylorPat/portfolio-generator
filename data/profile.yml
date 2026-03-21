@@ -41,57 +41,10 @@ projects:
       ]
     link: "https://github.com/taylorPat/parking-transactions-analysis"
 
-  - name: "parking transactions analysis"
-    description: "This project analyzes US parking transaction data to identify patterns in weekday and monthly transaction distributions, providing insights to optimize parking policies and infrastructure."
-    tech:
-      [
-        "Python",
-        "Terraform",
-        "Apache Spark",
-        "Google Cloud Storage",
-        "BigQuery",
-        "Looker Studio",
-      ]
-    link: "https://github.com/taylorPat/parking-transactions-analysis"
-
-  - name: "parking transactions analysis"
-    description: "This project analyzes US parking transaction data to identify patterns in weekday and monthly transaction distributions, providing insights to optimize parking policies and infrastructure."
-    tech:
-      [
-        "Python",
-        "Terraform",
-        "Apache Spark",
-        "Google Cloud Storage",
-        "BigQuery",
-        "Looker Studio",
-      ]
-    link: "https://github.com/taylorPat/parking-transactions-analysis"
-
-  - name: "parking transactions analysis"
-    description: "This project analyzes US parking transaction data to identify patterns in weekday and monthly transaction distributions, providing insights to optimize parking policies and infrastructure."
-    tech:
-      [
-        "Python",
-        "Terraform",
-        "Apache Spark",
-        "Google Cloud Storage",
-        "BigQuery",
-        "Looker Studio",
-      ]
-    link: "https://github.com/taylorPat/parking-transactions-analysis"
-
-  - name: "parking transactions analysis"
-    description: "This project analyzes US parking transaction data to identify patterns in weekday and monthly transaction distributions, providing insights to optimize parking policies and infrastructure."
-    tech:
-      [
-        "Python",
-        "Terraform",
-        "Apache Spark",
-        "Google Cloud Storage",
-        "BigQuery",
-        "Looker Studio",
-      ]
-    link: "https://github.com/taylorPat/parking-transactions-analysis"
+  - name: "portfolio generator"
+    description: "An cli application creating a portfolio in different file formats."
+    tech: ["Python", "Typer", "Jinja2"]
+    link: "https://github.com/taylorPat/portfolio-generator"
 
   - name: "Project Two"
     description: "Another project"
