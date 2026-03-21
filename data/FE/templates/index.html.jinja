@@ -1,0 +1,174 @@
+{% extends "base.html.jinja" %}
+
+{% block content %}
+
+{# Use values directly from profile.yml (no template defaults) #}
+{% set contact = contact if contact is defined else None %}
+{% set profile_image = profile_image if profile_image is defined else None %}
+
+<div class="landing-split">
+  <aside class="left-panel">
+    <div class="left-inner">
+      <div class="profile-avatar-wrap">
+        {% if profile_image %}
+          <img class="profile-avatar" src="{{ profile_image }}" alt="{{ name }}" />
+          {% else %}
+          <img class="profile-avatar" src="static/default-avatar.svg" alt="{{ name }}" />
+        {% endif %}
+      </div>
+
+      <h1>{{ name }}</h1>
+      <h3 class="muted">{{ title }}</h3>
+      <p class="about">{{ about }}</p>
+
+      <div class="contact-block">
+        {% if contact is defined and contact.email is defined %}
+          <p><strong>Email:</strong> <a href="mailto:{{ contact.email }}">{{ contact.email }}</a></p>
+        {% endif %}
+        {% if contact is defined and contact.location is defined %}
+          <p><strong>Location:</strong> {{ contact.location }}</p>
+        {% endif %}
+
+        {% if links is defined %}
+        <p class="profile-links">
+          {% for key, url in links.items() %}
+            <a class="btn small" href="{{ url }}" target="_blank" rel="noopener">{{ key | replace('_',' ') | title }}</a>
+          {% endfor %}
+        </p>
+        {% endif %}
+      </div>
+    </div>
+  </aside>
+
+  <div class="split-divider" aria-hidden="true"></div>
+
+  <section class="right-panel">
+    <div class="tabs">
+      <nav class="tabs-nav">
+        <button class="tab-btn active" data-tab="skills">Core skills</button>
+        <button class="tab-btn" data-tab="projects">Projects</button>
+        <button class="tab-btn" data-tab="cv">CV / Experience</button>
+      </nav>
+
+      <div class="tabs-content">
+        <div class="tab-panel plain-panel" id="skills" style="display:block">
+          <div class="skills-columns">
+            {# If `skill_groups` provided in profile.yml, render grouped sections #}
+            {% if skill_groups is defined %}
+              {% for section, items in skill_groups.items() %}
+              <div class="skill-section">
+                <h4>{{ section | capitalize }}</h4>
+                <div class="skill-items">
+                  {% for item in items %}
+                    <span class="skill-item" aria-hidden="true">{{ item }}</span>
+                  {% endfor %}
+                </div>
+              </div>
+              {% endfor %}
+            {% elif skills is defined %}
+              <div class="skill-section">
+                <h4>Skills</h4>
+                <div class="skill-items">
+                  {% for item in skills %}
+                    <span class="skill-item" aria-hidden="true">{{ item }}</span>
+                  {% endfor %}
+                </div>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="tab-panel projects-panel" id="projects" style="display:none">
+          <div class="projects-list">
+            {% if projects is defined %}
+              {% for project in projects %}
+              <article class="proj-item">
+                <h3 class="proj-title">{{ project.name }}</h3>
+
+                <div class="proj-actions">
+                  {% if project.link is defined %}
+                    <a class="proj-btn github" href="{{ project.link }}" target="_blank" rel="noopener">GitHub</a>
+                  {% endif %}
+                </div>
+
+                <div class="proj-skills">
+                  {% if project.tech is defined %}
+                    {% for tech in project.tech %}
+                      <span class="proj-skill">{{ tech }}</span>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+              </article>
+              {% endfor %}
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="tab-panel plain-panel" id="cv" style="display:none">
+          <div class="experience-list">
+            {% if cv is defined %}
+
+                {% for company in cv %}
+                  <div class="company-block">
+                    <h3 class="company-name">{{ company.company }}</h3>
+                    {% for station in company.stations %}
+                      <div class="exp-item">
+                        <h4>
+                          {{ station.get('role') }}
+                        </h4>
+                        <p class="muted">
+                          {% set sy = station.get('start_year') %}
+                          {% set ey = station.get('end_year') %}
+                          {% if sy or ey %}
+                            {{ sy }} - 
+                            {% if ey is not none %}
+                              {{ ey }}
+                            {% else %}
+                              Present
+                            {% endif %}
+
+                          {% endif %}
+                        </p>
+                        <p>
+                          {% set acts = station.get('activities') %}
+
+                          {% if acts %}
+                            {% if acts is string %}
+                              {{ acts }}
+                            {% elif acts is sequence %}
+                              {{ acts | join(', ') }}
+                            {% else %}
+                              {{ acts }}
+                            {% endif %}
+                          {% endif %}
+                        </p>
+                      </div>
+                    {% endfor %}
+                  </div>
+              
+                {% endfor %}
+            {% endif %}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  const buttons = document.querySelectorAll('.tab-btn');
+  buttons.forEach(btn => btn.addEventListener('click', function(){
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const tab = btn.dataset.tab;
+    document.querySelectorAll('.tab-panel').forEach(p=>p.style.display='none');
+    document.getElementById(tab).style.display='block';
+  }));
+});
+</script>
+{% endblock %}

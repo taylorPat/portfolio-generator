@@ -1,0 +1,117 @@
+name: Patrick Schneider
+title: Software Engineer
+
+about: >
+  Short professional summary. I like python.
+
+contact:
+  email: "my@mail.com"
+  location: "Berlin, Germany"
+
+links:
+  github: "https://github.com/taylorPat?tab=repositories"
+  linkedin: "https://linkedin.com/in/you"
+  xing: "https://google.com"
+
+skill_groups:
+  programming languages:
+    - Python
+    - bash
+  frameworks:
+    - FastApi
+    - SQLAlchemy
+    - OpenCV
+  cloud:
+    - Azure DevOps
+    - Azure Portal
+    - Docker
+    - Kubernetes
+
+projects:
+  - name: "parking transactions analysis"
+    description: "This project analyzes US parking transaction data to identify patterns in weekday and monthly transaction distributions, providing insights to optimize parking policies and infrastructure."
+    tech:
+      [
+        "Python",
+        "Terraform",
+        "Apache Spark",
+        "Google Cloud Storage",
+        "BigQuery",
+        "Looker Studio",
+      ]
+    link: "https://github.com/taylorPat/parking-transactions-analysis"
+
+  - name: "parking transactions analysis"
+    description: "This project analyzes US parking transaction data to identify patterns in weekday and monthly transaction distributions, providing insights to optimize parking policies and infrastructure."
+    tech:
+      [
+        "Python",
+        "Terraform",
+        "Apache Spark",
+        "Google Cloud Storage",
+        "BigQuery",
+        "Looker Studio",
+      ]
+    link: "https://github.com/taylorPat/parking-transactions-analysis"
+
+  - name: "parking transactions analysis"
+    description: "This project analyzes US parking transaction data to identify patterns in weekday and monthly transaction distributions, providing insights to optimize parking policies and infrastructure."
+    tech:
+      [
+        "Python",
+        "Terraform",
+        "Apache Spark",
+        "Google Cloud Storage",
+        "BigQuery",
+        "Looker Studio",
+      ]
+    link: "https://github.com/taylorPat/parking-transactions-analysis"
+
+  - name: "parking transactions analysis"
+    description: "This project analyzes US parking transaction data to identify patterns in weekday and monthly transaction distributions, providing insights to optimize parking policies and infrastructure."
+    tech:
+      [
+        "Python",
+        "Terraform",
+        "Apache Spark",
+        "Google Cloud Storage",
+        "BigQuery",
+        "Looker Studio",
+      ]
+    link: "https://github.com/taylorPat/parking-transactions-analysis"
+
+  - name: "parking transactions analysis"
+    description: "This project analyzes US parking transaction data to identify patterns in weekday and monthly transaction distributions, providing insights to optimize parking policies and infrastructure."
+    tech:
+      [
+        "Python",
+        "Terraform",
+        "Apache Spark",
+        "Google Cloud Storage",
+        "BigQuery",
+        "Looker Studio",
+      ]
+    link: "https://github.com/taylorPat/parking-transactions-analysis"
+
+  - name: "Project Two"
+    description: "Another project"
+    tech: ["ML", "PyTorch"]
+    link: "https://github.com/you/project2"
+
+cv:
+  - company: Audi
+    stations:
+      - role: Software engineer
+        start_year: 2022
+        end_year: 2024
+        activities: "Massive python programming"
+      - role: Software engineer
+        start_year: 2024
+        end_year: 2025
+        activities: "Searching for data and python programming"
+  - company: BMW
+    stations:
+      - role: Software engineer
+        start_year: 2025
+        end_year: null
+        activities: "Waiting for the enlightenment"
