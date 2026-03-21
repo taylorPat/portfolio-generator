@@ -32,6 +32,7 @@ projects:
     description: "This project analyzes US parking transaction data to identify patterns in weekday and monthly transaction distributions, providing insights to optimize parking policies and infrastructure."
     tech:
       [
+        "Data Engineering",
         "Python",
         "Terraform",
         "Apache Spark",
@@ -42,14 +43,9 @@ projects:
     link: "https://github.com/taylorPat/parking-transactions-analysis"
 
   - name: "portfolio generator"
-    description: "An cli application creating a portfolio in different file formats."
-    tech: ["Python", "Typer", "Jinja2"]
+    description: "An CLI application creating a portfolio in different file formats."
+    tech: ["Python", "CLI", "typer", "jinja2", "pyyaml", "uv"]
     link: "https://github.com/taylorPat/portfolio-generator"
-
-  - name: "Project Two"
-    description: "Another project"
-    tech: ["ML", "PyTorch"]
-    link: "https://github.com/you/project2"
 
 cv:
   - company: Audi
