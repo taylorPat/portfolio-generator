@@ -3,6 +3,7 @@ import shutil
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 import yaml
+from importlib.resources import files
 
 
 def load_data(file_path: Path) -> yaml.YAMLObject:
@@ -45,7 +46,9 @@ def copy_static(docs_folder_path: Path, static_file_folder_path: Path):
     shutil.copytree(static_file_folder_path, static_dst)
 
 
-_PACKAGE_ROOT_FOLDER_PATH = Path(__file__).parent.parent
+_PACKAGE_ROOT_FOLDER_PATH = files(
+    "portfolio"
+)  # Use files from importlib.resources because relative imports break after installation
 DEFAULT_TEMPLATE_FOLDER_PATH = _PACKAGE_ROOT_FOLDER_PATH / "data" / "FE" / "templates"
 DEFAULT_PROFILE_YAML_PATH = _PACKAGE_ROOT_FOLDER_PATH / "data" / "profile.yml"
 DEFAULT_HTML_TEMPLATE_FILE_NAME = "index.html.jinja"
