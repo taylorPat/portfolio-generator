@@ -1,5 +1,5 @@
 [project]
-name = "portfolio-generator"
+name = "portfolio"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -17,3 +17,7 @@ dev = [
 
 [project.scripts]
 portfolio = "portfolio.main:app"
+
+[build-system]
+requires = ["uv_build>=0.8.14,<0.9.0"]
+build-backend = "uv_build"
