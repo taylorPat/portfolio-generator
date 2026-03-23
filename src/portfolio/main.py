@@ -23,8 +23,10 @@ def create(
     html_template_file_name: Annotated[
         str, typer.Option()
     ] = DEFAULT_HTML_TEMPLATE_FILE_NAME,
-    static_files_folder_path: Annotated[Path, typer.Option()] = DEFAULT_STATICS_FILE_FOLDER_PATH,
-    docs_folder_path: Annotated[Path, typer.Option()] = DEFAULT_DOCS_FOLDER_PATH
+    static_files_folder_path: Annotated[
+        Path, typer.Option()
+    ] = DEFAULT_STATICS_FILE_FOLDER_PATH,
+    docs_folder_path: Annotated[Path, typer.Option()] = DEFAULT_DOCS_FOLDER_PATH,
 ):
     print(f"Profile yaml path: {profile_yaml_path}")
     print(f"Template folder path: {template_folder_path}")
@@ -34,6 +36,6 @@ def create(
         template_folder_path=template_folder_path,
         html_template_file_name=html_template_file_name,
         static_files_folder_path=static_files_folder_path,
-        docs_folder_path=docs_folder_path
+        docs_folder_path=docs_folder_path,
     )
-    print(f"DONE")
+    print("DONE")
