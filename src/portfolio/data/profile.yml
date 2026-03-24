@@ -1,9 +1,9 @@
-name: Patrick Schneider
-job_title: Software Engineer
+name: Patrick Star ⭐
+job_title: Consultant
 image_url: null
 
 about: >
-  I am Patrick Star, a highly motivated and easygoing individual with a strong dedication to teamwork and friendship. I bring a positive mindset to every situation and excel at staying calm under pressure—mostly because I’m not entirely sure what’s going on. My strengths include creative thinking, persistence, and an unwavering commitment to supporting my colleagues, especially my best friend. I am eager to contribute my unique perspective, learn new things (eventually), and help create a fun and collaborative work environment.
+  I am Patrick Star, a highly motivated and easygoing individual with a strong dedication to teamwork and friendship. I bring a positive mindset to every situation and excel at staying calm under pressure - mostly because I’m not entirely sure what’s going on.
 
 contact:
   email: "patrick@star.com"
@@ -13,12 +13,10 @@ contact:
     country: ocean
 
 links:
-  - name: github
-    url: "https://github.com/taylorPat?tab=repositories"
-  - name: linkedin
-    url: "https://linkedin.com/in/you"
-  - name: xing
-    url: "https://google.com"
+  - name: Fandom
+    url: "https://spongebob.fandom.com/de/wiki/Patrick_Star"
+  - name: Wikipedia
+    url: "https://en.wikipedia.org/wiki/Patrick_Star"
 
 skills:
   - name: programming languages
@@ -38,28 +36,17 @@ skills:
       - Kubernetes
 
 projects:
-  - name: "parking transactions analysis"
-    description: "This project analyzes US parking transaction data to identify patterns in weekday and monthly transaction distributions, providing insights to optimize parking policies and infrastructure."
-    attributes:
-      [
-        "Data Engineering",
-        "Python",
-        "Terraform",
-        "Apache Spark",
-        "Google Cloud Storage",
-        "BigQuery",
-        "Looker Studio",
-      ]
-    link:
-      name: GitLab
-      url: "https://github.com/taylorPat/parking-transactions-analysis"
-
-  - name: "portfolio generator"
-    description: "An CLI application creating a portfolio in different file formats."
-    attributes: ["Python", "CLI", "typer", "jinja2", "pyyaml", "uv"]
+  - name: "FastApi"
+    attributes: ["Python", "REST-API", "CRUD", "HTTP / HTTPS", "JSON"]
     link:
       name: Github
-      url: "https://github.com/taylorPat/portfolio-generator"
+      url: "https://github.com/fastapi/fastapi"
+
+  - name: "Typer"
+    attributes: ["Python", "CLI", "click", "rich", "shellingham"]
+    link:
+      name: Github
+      url: "https://github.com/fastapi/typer"
 
 cv:
   - company: Audi
