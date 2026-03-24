@@ -1,36 +1,46 @@
 name: Patrick Schneider
-title: Software Engineer
+job_title: Software Engineer
+image_url: null
 
 about: >
-  Short professional summary. I like python.
+  I am Patrick Star, a highly motivated and easygoing individual with a strong dedication to teamwork and friendship. I bring a positive mindset to every situation and excel at staying calm under pressure—mostly because I’m not entirely sure what’s going on. My strengths include creative thinking, persistence, and an unwavering commitment to supporting my colleagues, especially my best friend. I am eager to contribute my unique perspective, learn new things (eventually), and help create a fun and collaborative work environment.
 
 contact:
-  email: "my@mail.com"
-  location: "Berlin, Germany"
+  email: "patrick@star.com"
+  location:
+    city: Bikini Bottom
+    postal_code: 12345
+    country: ocean
 
 links:
-  github: "https://github.com/taylorPat?tab=repositories"
-  linkedin: "https://linkedin.com/in/you"
-  xing: "https://google.com"
+  - name: github
+    url: "https://github.com/taylorPat?tab=repositories"
+  - name: linkedin
+    url: "https://linkedin.com/in/you"
+  - name: xing
+    url: "https://google.com"
 
-skill_groups:
-  programming languages:
-    - Python
-    - bash
-  frameworks:
-    - FastApi
-    - SQLAlchemy
-    - OpenCV
-  cloud:
-    - Azure DevOps
-    - Azure Portal
-    - Docker
-    - Kubernetes
+skills:
+  - name: programming languages
+    attributes:
+      - Python
+      - bash
+  - name: frameworks
+    attributes:
+      - FastApi
+      - SQLAlchemy
+      - OpenCV
+  - name: cloud
+    attributes:
+      - Azure DevOps
+      - Azure Portal
+      - Docker
+      - Kubernetes
 
 projects:
   - name: "parking transactions analysis"
     description: "This project analyzes US parking transaction data to identify patterns in weekday and monthly transaction distributions, providing insights to optimize parking policies and infrastructure."
-    tech:
+    attributes:
       [
         "Data Engineering",
         "Python",
@@ -40,12 +50,16 @@ projects:
         "BigQuery",
         "Looker Studio",
       ]
-    link: "https://github.com/taylorPat/parking-transactions-analysis"
+    link:
+      name: GitLab
+      url: "https://github.com/taylorPat/parking-transactions-analysis"
 
   - name: "portfolio generator"
     description: "An CLI application creating a portfolio in different file formats."
-    tech: ["Python", "CLI", "typer", "jinja2", "pyyaml", "uv"]
-    link: "https://github.com/taylorPat/portfolio-generator"
+    attributes: ["Python", "CLI", "typer", "jinja2", "pyyaml", "uv"]
+    link:
+      name: Github
+      url: "https://github.com/taylorPat/portfolio-generator"
 
 cv:
   - company: Audi

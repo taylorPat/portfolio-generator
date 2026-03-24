@@ -21,13 +21,6 @@ class Link:
 
 
 @dataclass
-class Section:
-    name: str
-    attributes: list[str]
-    link: Link
-
-
-@dataclass
 class Skill:
     name: str
     attributes: list[str]
@@ -36,7 +29,8 @@ class Skill:
 @dataclass
 class Project:
     name: str
-    sections: list[Section]
+    attributes: list[str]
+    link: Link
 
 
 @dataclass
@@ -57,10 +51,10 @@ class Company:
 class Portfolio:
     name: str
     job_title: str
+    image_url: str | None
     about: str
     contact: Contact
     links: list[Link]
-    image_url: str | None
     skills: list[Skill]
     projects: list[Project]
     cv: list[Company]

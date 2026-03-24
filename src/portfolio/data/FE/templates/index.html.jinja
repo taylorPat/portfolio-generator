@@ -4,35 +4,46 @@
 
 {# Use values directly from profile.yml (no template defaults) #}
 {% set contact = contact if contact is defined else None %}
-{% set profile_image = profile_image if profile_image is defined else None %}
 
 <div class="landing-split">
   <aside class="left-panel">
     <div class="left-inner">
       <div class="profile-avatar-wrap">
-        {% if profile_image %}
-          <img class="profile-avatar" src="{{ profile_image }}" alt="{{ name }}" />
+        {% if image_url %}
+          <img class="profile-avatar" src="{{ image_url }}" alt="{{ name }}" />
           {% else %}
           <img class="profile-avatar" src="static/default-avatar.svg" alt="{{ name }}" />
         {% endif %}
       </div>
 
       <h1>{{ name }}</h1>
-      <h3 class="muted">{{ title }}</h3>
+      <h3 class="muted">{{ job_title }}</h3>
       <p class="about">{{ about }}</p>
 
       <div class="contact-block">
         {% if contact is defined and contact.email is defined %}
           <p><strong>Email:</strong> <a href="mailto:{{ contact.email }}">{{ contact.email }}</a></p>
         {% endif %}
-        {% if contact is defined and contact.location is defined %}
-          <p><strong>Location:</strong> {{ contact.location }}</p>
+        {% if contact is defined %}
+          {% if contact.location is defined %}
+          <p><strong>Location:</strong> 
+            {% if contact.location.city is defined %}
+              {{ contact.location.city }},
+            {% endif %}
+            {% if contact.location.postal_code is defined %}
+              {{ contact.location.postal_code }},
+            {% endif %}
+            {% if contact.location.country is defined %}
+              {{ contact.location.country }}
+            {% endif %}
+          </p>
+          {% endif %}
         {% endif %}
 
         {% if links is defined %}
         <p class="profile-links">
-          {% for key, url in links.items() %}
-            <a class="btn small" href="{{ url }}" target="_blank" rel="noopener">{{ key | replace('_',' ') | title }}</a>
+          {% for link in links %}
+            <a class="btn small" href="{{ link.url }}" target="_blank" rel="noopener">{{ link.name | replace('_',' ') | title }}</a>
           {% endfor %}
         </p>
         {% endif %}
@@ -53,13 +64,13 @@
       <div class="tabs-content">
         <div class="tab-panel plain-panel" id="skills" style="display:block">
           <div class="skills-columns">
-            {# If `skill_groups` provided in profile.yml, render grouped sections #}
-            {% if skill_groups is defined %}
-              {% for section, items in skill_groups.items() %}
+            {# If `skills` provided in profile.yml, render grouped sections #}
+            {% if skills is defined %}
+              {% for skill in skills %}
               <div class="skill-section">
-                <h4>{{ section | capitalize }}</h4>
+                <h4>{{ skill.name | capitalize }}</h4>
                 <div class="skill-items">
-                  {% for item in items %}
+                  {% for item in skill.attributes %}
                     <span class="skill-item" aria-hidden="true">{{ item }}</span>
                   {% endfor %}
                 </div>
@@ -87,14 +98,14 @@
 
                 <div class="proj-actions">
                   {% if project.link is defined %}
-                    <a class="proj-btn github" href="{{ project.link }}" target="_blank" rel="noopener">GitHub</a>
+                    <a class="proj-btn github" href="{{ project.link.url }}" target="_blank" rel="noopener">{{ project.link.name }}</a>
                   {% endif %}
                 </div>
 
                 <div class="proj-skills">
-                  {% if project.tech is defined %}
-                    {% for tech in project.tech %}
-                      <span class="proj-skill">{{ tech }}</span>
+                  {% if project.attributes is defined %}
+                    {% for attr in project.attributes %}
+                      <span class="proj-skill">{{ attr }}</span>
                     {% endfor %}
                   {% endif %}
                 </div>

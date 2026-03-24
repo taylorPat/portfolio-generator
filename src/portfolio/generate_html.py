@@ -2,20 +2,12 @@ from pathlib import Path
 import shutil
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
-import yaml
 from importlib.resources import files
 
+from portfolio.validate import load_data
 
-def load_data(file_path: Path) -> yaml.YAMLObject:
-    print(f"Loading YAML from: {file_path}")
-    print(f"Exists: {file_path.exists()}")
-    print(f"Size: {file_path.stat().st_size if file_path.exists() else 'N/A'}")
 
-    with file_path.open("r", encoding="utf-8") as file:
-        content = file.read()
-        print("RAW CONTENT:")
-        print(content)
-        return yaml.safe_load(content)
+
 
 
 def render_template(

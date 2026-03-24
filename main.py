@@ -1,4 +1,4 @@
-from portfolio import Portfolio, Contact, Location, Link, Section, Skill
+from portfolio import Portfolio, Contact, Location, Link, Skill
 from portfolio.pdf import build_portfolio_pdf
 
 
@@ -16,7 +16,7 @@ portfolio = Portfolio(
         Skill(name="Programming Languages", attributes=["Python", "SQL", "bash"]),
         Skill(
             name="Frameworks",
-            attributes=["FastAPI", "SQLAlchemy", "Alembic", "uv", "ruff", "mypy"],
+            attributes=["FastAPI", "SQLAlchemy", "Alembic", "uv", "ruff", "mypy", "FastAPI", "SQLAlchemy", "Alembic", "uv", "ruff", "mypy", "FastAPI", "SQLAlchemy", "Alembic", "uv", "ruff", "mypy"],
         ),
     ],
     projects=[],
