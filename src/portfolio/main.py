@@ -1,5 +1,6 @@
 from pathlib import Path
 from typing import Annotated
+from portfolio.validate import load_data, validate_file
 import typer
 
 from portfolio.generate_html import (
@@ -39,3 +40,9 @@ def create(
         docs_folder_path=docs_folder_path,
     )
     print("DONE")
+    
+@app.command()
+def validate(profile_yaml_path: Annotated[Path, typer.Option()] = DEFAULT_PROFILE_YAML_PATH):
+    dic = load_data(file_path=profile_yaml_path)
+    print(dic)
+    return validate_file(portfolio=dic)
