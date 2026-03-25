@@ -4,9 +4,7 @@ from typing import Annotated
 import typer
 from rich import print as rprint
 
-from portfolio.pdf import create_pdf
-from portfolio.validate import load_data, validate_file
-from portfolio.generate_html import build
+from portfolio import create_pdf, create_html, load_config
 
 app = typer.Typer()
 
@@ -44,7 +42,7 @@ def create(
     else:
         portfolio = validate(profile_yaml_path=profile_yaml_path)
         if html:
-            docs_folder_path = build(portfolio=portfolio)
+            docs_folder_path = create_html(portfolio=portfolio)
             rprint(f"[green][SUCCESS][/green] Save portfolio as html ({docs_folder_path})")
         if pdf:
             filepath = create_pdf(portfolio=portfolio)
@@ -57,6 +55,6 @@ def validate(
         Path | None, typer.Option(callback=get_profile_yaml_file)
     ] = None,
 ):
-    dic = load_data(file_path=profile_yaml_path)
-    rprint("[green][SUCCESS][/green] Validate yaml configuration")
-    return validate_file(portfolio=dic)
+    portfolio = load_config(file_path=profile_yaml_path)
+    rprint(f"[green][SUCCESS][/green] Valid yaml configuration ({profile_yaml_path})")
+    return portfolio
