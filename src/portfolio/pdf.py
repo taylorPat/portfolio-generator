@@ -1,8 +1,7 @@
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.lib.units import cm, mm
-from reportlab.pdfgen import canvas
+from reportlab.lib.units import mm
 from reportlab.platypus import (
     BaseDocTemplate,
     Frame,
@@ -15,8 +14,49 @@ from reportlab.platypus import (
 
 from .models import Portfolio
 
+# =========================
+# TYPOGRAPHY (centralized)
+# =========================
+TITLE_SIZE = 18
+HEADER_SIZE = 13
+BODY_SIZE = 9
+SMALL_SIZE = 8
 
-def build_pdf(portfolio, filename: str):
+styles = getSampleStyleSheet()
+
+TITLE_STYLE = ParagraphStyle(
+    "title",
+    parent=styles["Heading1"],
+    fontSize=TITLE_SIZE,
+    spaceAfter=10,
+)
+
+HEADER_STYLE = ParagraphStyle(
+    "header",
+    parent=styles["Heading2"],
+    fontSize=HEADER_SIZE,
+    textColor=colors.black,
+    spaceBefore=8,
+    spaceAfter=6,
+)
+
+BODY_STYLE = ParagraphStyle(
+    "body",
+    parent=styles["Normal"],
+    fontSize=BODY_SIZE,
+    spaceAfter=4,
+)
+
+SMALL_STYLE = ParagraphStyle(
+    "small",
+    parent=styles["Normal"],
+    fontSize=SMALL_SIZE,
+    textColor=colors.grey,
+    spaceAfter=3,
+)
+
+
+def build_pdf(portfolio: Portfolio, filename: str):
     # =========================
     # DOCUMENT SETUP
     # =========================
@@ -35,7 +75,6 @@ def build_pdf(portfolio, filename: str):
     left_width = 55 * mm
     right_width = page_width - left_width - 30 * mm  # margins included
 
-    # Frames (THIS is the key for production)
     left_frame = Frame(
         doc.leftMargin,
         doc.bottomMargin,
@@ -55,47 +94,6 @@ def build_pdf(portfolio, filename: str):
     template = PageTemplate(id="two_column", frames=[left_frame, right_frame])
     doc.addPageTemplates([template])
 
-    styles = getSampleStyleSheet()
-
-    # =========================
-    # TYPOGRAPHY (centralized)
-    # =========================
-    TITLE_SIZE = 18
-    HEADER_SIZE = 13
-    BODY_SIZE = 9
-    SMALL_SIZE = 8
-
-    title_style = ParagraphStyle(
-        "title",
-        parent=styles["Heading1"],
-        fontSize=TITLE_SIZE,
-        spaceAfter=10,
-    )
-
-    header_style = ParagraphStyle(
-        "header",
-        parent=styles["Heading2"],
-        fontSize=HEADER_SIZE,
-        textColor=colors.black,
-        spaceBefore=8,
-        spaceAfter=6,
-    )
-
-    body_style = ParagraphStyle(
-        "body",
-        parent=styles["Normal"],
-        fontSize=BODY_SIZE,
-        spaceAfter=4,
-    )
-
-    small_style = ParagraphStyle(
-        "small",
-        parent=styles["Normal"],
-        fontSize=SMALL_SIZE,
-        textColor=colors.grey,
-        spaceAfter=3,
-    )
-
     # =========================
     # STORY BUILDING
     # =========================
@@ -104,7 +102,6 @@ def build_pdf(portfolio, filename: str):
     # =========================
     # LEFT COLUMN
     # =========================
-
     # Profile Image
     if portfolio.image_url:
         try:
@@ -116,25 +113,25 @@ def build_pdf(portfolio, filename: str):
             pass
 
     # Contact
-    story.append(Paragraph("Contact", header_style))
-    story.append(Paragraph(portfolio.contact.email, body_style))
+    story.append(Paragraph("Contact", HEADER_STYLE))
+    story.append(Paragraph(portfolio.contact.email, BODY_STYLE))
 
     loc = portfolio.contact.location
-    story.append(Paragraph(f"{loc.city}, {loc.postal_code}, {loc.country}", body_style))
+    story.append(Paragraph(f"{loc.city}, {loc.postal_code}, {loc.country}", BODY_STYLE))
 
     story.append(Spacer(1, 10))
 
     # Links
     if portfolio.links:
-        story.append(Paragraph("Links", header_style))
+        story.append(Paragraph("Links", HEADER_STYLE))
         for link in portfolio.links:
-            story.append(Paragraph(f"{link.name}: {link.url}", small_style))
+            story.append(Paragraph(f"{link.name}: {link.url}", SMALL_STYLE))
 
     story.append(Spacer(1, 10))
 
     # Education placeholder
-    story.append(Paragraph("Education", header_style))
-    story.append(Paragraph("Add education here", small_style))
+    story.append(Paragraph("Education", HEADER_STYLE))
+    story.append(Paragraph("Add education here", SMALL_STYLE))
 
     # Move to RIGHT COLUMN
     story.append(FrameBreak())
@@ -142,20 +139,19 @@ def build_pdf(portfolio, filename: str):
     # =========================
     # RIGHT COLUMN
     # =========================
-
     # Header
-    story.append(Paragraph(portfolio.name, title_style))
-    story.append(Paragraph(portfolio.job_title, body_style))
+    story.append(Paragraph(portfolio.name, TITLE_STYLE))
+    story.append(Paragraph(portfolio.job_title, BODY_STYLE))
 
     # About
-    story.append(Paragraph("About", header_style))
-    story.append(Paragraph(portfolio.about, body_style))
+    story.append(Paragraph("About", HEADER_STYLE))
+    story.append(Paragraph(portfolio.about, BODY_STYLE))
 
     # Experience
-    story.append(Paragraph("Experience", header_style))
+    story.append(Paragraph("Experience", HEADER_STYLE))
 
     for company in portfolio.cv:
-        story.append(Paragraph(company.name, body_style))
+        story.append(Paragraph(company.name, BODY_STYLE))
 
         for station in company.stations:
             years = f"{station.start_year}–{station.end_year or 'Present'}"
@@ -163,33 +159,28 @@ def build_pdf(portfolio, filename: str):
             story.append(
                 Paragraph(
                     f"<b>{station.role}</b> ({years})<br/>{station.activities}",
-                    small_style,
+                    SMALL_STYLE,
                 )
             )
 
     story.append(Spacer(1, 10))
 
-    # =========================
     # SKILLS + PROJECTS (STACKED, safer for pagination)
-    # =========================
-    story.append(Paragraph("Skills", body_style))
+    story.append(Paragraph("Skills", BODY_STYLE))
     for skill in portfolio.skills:
         attrs = ", ".join(skill.attributes)
-        story.append(Paragraph(f"{skill.name} – {attrs}", body_style))
+        story.append(Paragraph(f"{skill.name} – {attrs}", BODY_STYLE))
 
-    story.append(Paragraph("Projects", body_style))
+    story.append(Paragraph("Projects", BODY_STYLE))
     for project in portfolio.projects:
         attrs = ", ".join(project.attributes)
         story.append(
             Paragraph(
                 f"<b>{project.name}</b><br/>{attrs}<br/>{project.link.name}: {project.link.url}",
-                body_style,
+                BODY_STYLE,
             )
         )
 
     story.append(Spacer(1, 8))
 
-    # =========================
-    # BUILD DOCUMENT
-    # =========================
     doc.build(story)
