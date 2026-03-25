@@ -49,7 +49,6 @@ def create(
             filename = "test.pdf"
             build_pdf(portfolio=portfolio, filename=filename)
             rprint(f"[green][SUCCESS][/green] Save portfolio as {filename}")
-            # build_portfolio_pdf(portfolio=portfolio, filename="portfolio.pdf")
 
 
 @app.command()
