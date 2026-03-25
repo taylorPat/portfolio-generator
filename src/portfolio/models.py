@@ -1,60 +1,58 @@
-from dataclasses import dataclass
+from pathlib import Path
+from pydantic import BaseModel, field_validator
 
 
-@dataclass
-class Location:
+class Location(BaseModel):
     city: str
     postal_code: str | int
     country: str
 
 
-@dataclass
-class Contact:
+class Contact(BaseModel):
     email: str
     location: Location
 
 
-@dataclass
-class Link:
+class Link(BaseModel):
     name: str
     url: str
 
 
-@dataclass
-class Skill:
+class Skill(BaseModel):
     name: str
     attributes: list[str]
 
 
-@dataclass
-class Project:
+class Project(BaseModel):
     name: str
     attributes: list[str]
     link: Link
 
 
-@dataclass
-class Station:
+class Station(BaseModel):
     role: str
-    start_year: str
-    end_year: str
+    start_year: int
+    end_year: int | None
     activities: str
 
 
-@dataclass
-class Company:
+class Company(BaseModel):
     name: str
     stations: list[Station]
 
 
-@dataclass
-class Portfolio:
+class Portfolio(BaseModel):
     name: str
     job_title: str
-    image_url: str | None
+    image_url: str | None | Path
     about: str
     contact: Contact
     links: list[Link]
     skills: list[Skill]
     projects: list[Project]
     cv: list[Company]
+
+    @field_validator("image_url")
+    def convert_image(cls, v):
+        if isinstance(v, str):
+            return Path(v)

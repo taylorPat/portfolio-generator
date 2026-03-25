@@ -4,10 +4,7 @@ import shutil
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from importlib.resources import files
 
-from portfolio.validate import load_data
-
-
-
+from portfolio.models import Portfolio
 
 
 def render_template(
@@ -49,19 +46,16 @@ DEFAULT_STATICS_FILE_FOLDER_PATH = _PACKAGE_ROOT_FOLDER_PATH / "data" / "FE" / "
 
 
 def build(
-    profile_yaml_path: Path | None = None,
+    portfolio: Portfolio,
     template_folder_path: Path | None = None,
     html_template_file_name: str | None = None,
     static_files_folder_path: str | None = None,
     docs_folder_path: Path | None = None,
 ):
-    profile_yaml_path = profile_yaml_path or DEFAULT_PROFILE_YAML_PATH
-    yaml_data = load_data(file_path=profile_yaml_path)
-
     template_folder_path = template_folder_path or DEFAULT_TEMPLATE_FOLDER_PATH
     html_template_file_name = html_template_file_name or DEFAULT_HTML_TEMPLATE_FILE_NAME
     html = render_template(
-        yaml_data=yaml_data,
+        yaml_data=portfolio.model_dump(),
         template_folder_path=template_folder_path,
         html_template_file_name=html_template_file_name,
     )

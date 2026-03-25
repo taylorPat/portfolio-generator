@@ -2,6 +2,7 @@ from pathlib import Path
 from portfolio.models import Portfolio
 import yaml
 
+
 def load_data(file_path: Path) -> yaml.YAMLObject:
     print(f"Loading YAML from: {file_path}")
     print(f"Exists: {file_path.exists()}")
@@ -12,6 +13,7 @@ def load_data(file_path: Path) -> yaml.YAMLObject:
         print("RAW CONTENT:")
         print(content)
         return yaml.safe_load(content)
-    
+
+
 def validate_file(portfolio: dict):
     return Portfolio(**portfolio)
