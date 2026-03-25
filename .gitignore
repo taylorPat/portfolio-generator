@@ -1,6 +1,9 @@
 # custom
 docs/
 *.pdf
+tmp/
+*.yml
+*.yaml
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
