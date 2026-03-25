@@ -38,7 +38,7 @@ def create(
     pdf: Annotated[bool, typer.Option("--pdf", help="Generate HTML output")] = False,
 ):
     if not html and not pdf:
-        rprint("[red][SUCCESS][/red] Please provide at least one of --html or --pdf")
+        rprint("[red][ERROR][/red] Please provide at least one of --html or --pdf")
     else:
         portfolio = validate(profile_yaml_path=profile_yaml_path)
         if html:

@@ -169,20 +169,22 @@ def create_pdf(portfolio: Portfolio, filepath: str | None = None) -> Path:
     story.append(Spacer(1, 10))
 
     # SKILLS + PROJECTS (STACKED, safer for pagination)
-    story.append(Paragraph("Skills", BODY_STYLE))
+    story.append(Paragraph("Skills", HEADER_STYLE))
     for skill in portfolio.skills:
         attrs = ", ".join(skill.attributes)
-        story.append(Paragraph(f"{skill.name} – {attrs}", BODY_STYLE))
+        story.append(Paragraph(f"<b>{skill.name}</b>", BODY_STYLE))
+        story.append(Paragraph(attrs, BODY_STYLE))
 
-    story.append(Paragraph("Projects", BODY_STYLE))
+    story.append(Paragraph("Projects", HEADER_STYLE))
     for project in portfolio.projects:
         attrs = ", ".join(project.attributes)
         story.append(
             Paragraph(
-                f"<b>{project.name}</b><br/>{attrs}<br/>{project.link.name}: {project.link.url}",
+                f"<b>{project.name}</b><br/>{attrs}",
                 BODY_STYLE,
             )
         )
+        story.append(Paragraph(f"<link href={project.link.url}>{project.link.url}</link><br/><br/>"))
 
     story.append(Spacer(1, 8))
 
