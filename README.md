@@ -14,15 +14,17 @@ A simple tool to generate a static portfolio site from structured data.
 git clone https://github.com/taylorPat/portfolio-generator
 cd portfolio-generator
 uv sync
-uv pip install -e .
 ```
 
-> Note: The editable install (`-e`) is currently required to enable the CLI.
-
-## ▶️ Usage
+## ▶️ CLI Usage
 
 ```bash
-uv run portfolio --docs-folder-path <DOCS_FOLDER_PATH>
-```
+uv run portfolio create --html
 
-- `<DOCS_FOLDER_PATH>`: Path where the generated site will be written
+# or activate the virtual environment
+portfolio create --html
+
+# get help
+portfolio --help
+portfolio create --help
+```
