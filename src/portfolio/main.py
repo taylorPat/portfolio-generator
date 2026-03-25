@@ -1,48 +1,63 @@
 from pathlib import Path
 from typing import Annotated
-from portfolio.validate import load_data, validate_file
-import typer
 
-from portfolio.generate_html import (
-    DEFAULT_DOCS_FOLDER_PATH,
-    DEFAULT_HTML_TEMPLATE_FILE_NAME,
-    DEFAULT_PROFILE_YAML_PATH,
-    DEFAULT_STATICS_FILE_FOLDER_PATH,
-    DEFAULT_TEMPLATE_FOLDER_PATH,
-    build,
-)
+import typer
+from rich import print as rprint
+
+from portfolio.pdf import build_pdf
+from portfolio.validate import load_data, validate_file
+from portfolio.generate_html import build
 
 app = typer.Typer()
 
 
+def get_profile_yaml_file(value: Path):
+    """Searching for default files"""
+    DEFAULT_PROFILE_YML_PATH = Path().cwd() / "profile.yml"
+    DEFAULT_PROFILE_YAML_PATH = Path().cwd() / "profile.yaml"
+    if value is None:
+        if DEFAULT_PROFILE_YAML_PATH.is_file():
+            return DEFAULT_PROFILE_YAML_PATH
+        elif DEFAULT_PROFILE_YML_PATH.is_file():
+            return DEFAULT_PROFILE_YML_PATH
+        else:
+            paths = Path().cwd().glob(pattern="*.ya?ml")
+            if len(paths) > 1:
+                raise typer.BadParameter("More than one yaml file found.")
+            return paths[0]
+    elif value.is_file():
+        return value
+    else:
+        typer.BadParameter(message="Please provide a yaml file!")
+
+
 @app.command()
 def create(
-    profile_yaml_path: Annotated[Path, typer.Option()] = DEFAULT_PROFILE_YAML_PATH,
-    template_folder_path: Annotated[
-        Path, typer.Option()
-    ] = DEFAULT_TEMPLATE_FOLDER_PATH,
-    html_template_file_name: Annotated[
-        str, typer.Option()
-    ] = DEFAULT_HTML_TEMPLATE_FILE_NAME,
-    static_files_folder_path: Annotated[
-        Path, typer.Option()
-    ] = DEFAULT_STATICS_FILE_FOLDER_PATH,
-    docs_folder_path: Annotated[Path, typer.Option()] = DEFAULT_DOCS_FOLDER_PATH,
+    profile_yaml_path: Annotated[
+        Path | None, typer.Option(callback=get_profile_yaml_file)
+    ] = None,
+    html: Annotated[bool, typer.Option("--html", help="Generate HTML output")] = False,
+    pdf: Annotated[bool, typer.Option("--pdf", help="Generate HTML output")] = False,
 ):
-    print(f"Profile yaml path: {profile_yaml_path}")
-    print(f"Template folder path: {template_folder_path}")
-    print(f"Html template file: {html_template_file_name}")
-    build(
-        profile_yaml_path=profile_yaml_path,
-        template_folder_path=template_folder_path,
-        html_template_file_name=html_template_file_name,
-        static_files_folder_path=static_files_folder_path,
-        docs_folder_path=docs_folder_path,
-    )
-    print("DONE")
-    
+    if not html and not pdf:
+        rprint("[red][SUCCESS][/red] Please provide at least one of --html or --pdf")
+    else:
+        portfolio = validate(profile_yaml_path=profile_yaml_path)
+        if html:
+            build(portfolio=portfolio)
+        if pdf:
+            filename = "test.pdf"
+            build_pdf(portfolio=portfolio, filename=filename)
+            rprint(f"[green][SUCCESS][/green] Save portfolio as {filename}")
+            # build_portfolio_pdf(portfolio=portfolio, filename="portfolio.pdf")
+
+
 @app.command()
-def validate(profile_yaml_path: Annotated[Path, typer.Option()] = DEFAULT_PROFILE_YAML_PATH):
+def validate(
+    profile_yaml_path: Annotated[
+        Path | None, typer.Option(callback=get_profile_yaml_file)
+    ] = None,
+):
     dic = load_data(file_path=profile_yaml_path)
-    print(dic)
+    rprint("[green][SUCCESS][/green] Validate yaml configuration")
     return validate_file(portfolio=dic)

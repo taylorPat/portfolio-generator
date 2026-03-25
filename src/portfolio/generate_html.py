@@ -39,7 +39,7 @@ _PACKAGE_ROOT_FOLDER_PATH = files(
     "portfolio"
 )  # Use files from importlib.resources because relative imports break after installation
 DEFAULT_TEMPLATE_FOLDER_PATH = _PACKAGE_ROOT_FOLDER_PATH / "data" / "FE" / "templates"
-DEFAULT_PROFILE_YAML_PATH = _PACKAGE_ROOT_FOLDER_PATH / "data" / "profile.yml"
+DEFAULT_PROFILE_YAML_PATH = Path().cwd() / "profile.yml"
 DEFAULT_HTML_TEMPLATE_FILE_NAME = "index.html.jinja"
 DEFAULT_DOCS_FOLDER_PATH = Path().cwd() / "docs"
 DEFAULT_STATICS_FILE_FOLDER_PATH = _PACKAGE_ROOT_FOLDER_PATH / "data" / "FE" / "static"
