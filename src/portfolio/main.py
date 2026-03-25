@@ -4,7 +4,7 @@ from typing import Annotated
 import typer
 from rich import print as rprint
 
-from portfolio.pdf import build_pdf
+from portfolio.pdf import create_pdf
 from portfolio.validate import load_data, validate_file
 from portfolio.generate_html import build
 
@@ -44,11 +44,11 @@ def create(
     else:
         portfolio = validate(profile_yaml_path=profile_yaml_path)
         if html:
-            build(portfolio=portfolio)
+            docs_folder_path = build(portfolio=portfolio)
+            rprint(f"[green][SUCCESS][/green] Save portfolio as html ({docs_folder_path})")
         if pdf:
-            filename = "test.pdf"
-            build_pdf(portfolio=portfolio, filename=filename)
-            rprint(f"[green][SUCCESS][/green] Save portfolio as {filename}")
+            filepath = create_pdf(portfolio=portfolio)
+            rprint(f"[green][SUCCESS][/green] Save portfolio as pdf ({filepath})")
 
 
 @app.command()

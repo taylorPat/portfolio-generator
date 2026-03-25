@@ -1,3 +1,4 @@
+from pathlib import Path
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
@@ -55,13 +56,15 @@ SMALL_STYLE = ParagraphStyle(
     spaceAfter=3,
 )
 
+DEFAULT_PDF_FILE_PATH = Path().cwd() / "portfolio.pdf"
 
-def build_pdf(portfolio: Portfolio, filename: str):
+def create_pdf(portfolio: Portfolio, filepath: str | None = None) -> Path:
+    filepath = filepath or DEFAULT_PDF_FILE_PATH
     # =========================
     # DOCUMENT SETUP
     # =========================
     doc = BaseDocTemplate(
-        filename,
+        str(filepath),
         pagesize=A4,
         leftMargin=15 * mm,
         rightMargin=15 * mm,
@@ -184,3 +187,4 @@ def build_pdf(portfolio: Portfolio, filename: str):
     story.append(Spacer(1, 8))
 
     doc.build(story)
+    return filepath
