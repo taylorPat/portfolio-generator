@@ -7,7 +7,7 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 from .models import Portfolio
 
 # Use files from importlib.resources because relative imports break after installation
-_PACKAGE_ROOT_FOLDER_PATH = files("portfolio")  
+_PACKAGE_ROOT_FOLDER_PATH = files("portfolio")
 DEFAULT_TEMPLATE_FOLDER_PATH = _PACKAGE_ROOT_FOLDER_PATH / "data" / "FE" / "templates"
 DEFAULT_PROFILE_YAML_PATH = Path().cwd() / "profile.yml"
 DEFAULT_HTML_TEMPLATE_FILE_NAME = "index.html.jinja"
@@ -32,12 +32,15 @@ def create_html(
 
     docs_folder_path = docs_folder_path or DEFAULT_DOCS_FOLDER_PATH
     write_output(html=html, docs_folder_path=docs_folder_path)
-    static_files_folder_path = static_files_folder_path or DEFAULT_STATICS_FILE_FOLDER_PATH
+    static_files_folder_path = (
+        static_files_folder_path or DEFAULT_STATICS_FILE_FOLDER_PATH
+    )
     copy_static(
         docs_folder_path=docs_folder_path,
         static_file_folder_path=static_files_folder_path,
     )
     return docs_folder_path
+
 
 def render_template(
     yaml_data, template_folder_path: Path, html_template_file_name: str

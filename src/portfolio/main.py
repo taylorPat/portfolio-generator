@@ -1,6 +1,8 @@
+from enum import StrEnum
 from pathlib import Path
 from typing import Annotated
 
+from portfolio.pdf import ThemeColor
 import typer
 from rich import print as rprint
 
@@ -29,6 +31,23 @@ def get_profile_yaml_file(value: Path):
         typer.BadParameter(message="Please provide a yaml file!")
 
 
+class Color(StrEnum):
+    BLUE = "BLUE"
+    PURPLE = "PURPLE"
+    # GREEN = "#2ECC71"
+    # DARK = "#2C3E50"
+    # RED = "#E74C3C"
+
+
+def convert_color_to_theme_color(value: Color):
+    try:
+        return ThemeColor[value]
+    except Exception:
+        return typer.BadParameter(
+            f"Color is not defined! Use one of {list(ThemeColor)}"
+        )
+
+
 @app.command()
 def create(
     profile_yaml_path: Annotated[
@@ -36,6 +55,9 @@ def create(
     ] = None,
     html: Annotated[bool, typer.Option("--html", help="Generate HTML output")] = False,
     pdf: Annotated[bool, typer.Option("--pdf", help="Generate HTML output")] = False,
+    color: Annotated[
+        Color, typer.Option("--color", help="Color of the pdf file", show_choices=True)
+    ] = Color.BLUE,
 ):
     if not html and not pdf:
         rprint("[red][ERROR][/red] Please provide at least one of --html or --pdf")
@@ -43,9 +65,12 @@ def create(
         portfolio = validate(profile_yaml_path=profile_yaml_path)
         if html:
             docs_folder_path = create_html(portfolio=portfolio)
-            rprint(f"[green][SUCCESS][/green] Save portfolio as html ({docs_folder_path})")
+            rprint(
+                f"[green][SUCCESS][/green] Save portfolio as html ({docs_folder_path})"
+            )
         if pdf:
-            filepath = create_pdf(portfolio=portfolio)
+            color = convert_color_to_theme_color(value=color)
+            filepath = create_pdf(portfolio=portfolio, theme_color=color)
             rprint(f"[green][SUCCESS][/green] Save portfolio as pdf ({filepath})")
 
 
