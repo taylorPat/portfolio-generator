@@ -28,12 +28,10 @@
           {% if contact.location is defined %}
           <p><strong>Location:</strong> 
             {% if contact.location.city is defined %}
-              {{ contact.location.city }},
-            {% endif %}
-            {% if contact.location.postal_code is defined %}
-              {{ contact.location.postal_code }},
+              {{ contact.location.city }}
             {% endif %}
             {% if contact.location.country is defined %}
+              {% if contact.location.city is defined %}, {% endif %}
               {{ contact.location.country }}
             {% endif %}
           </p>
@@ -117,47 +115,62 @@
 
         <div class="tab-panel plain-panel" id="cv" style="display:none">
           <div class="experience-list">
-            {% if cv is defined %}
-
-                {% for company in cv %}
-                  <div class="company-block">
-                    <h3 class="company-name">{{ company.company }}</h3>
-                    {% for station in company.stations %}
-                      <div class="exp-item">
-                        <h4>
-                          {{ station.get('role') }}
-                        </h4>
-                        <p class="muted">
-                          {% set sy = station.get('start_year') %}
-                          {% set ey = station.get('end_year') %}
-                          {% if sy or ey %}
-                            {{ sy }} - 
-                            {% if ey is not none %}
-                              {{ ey }}
-                            {% else %}
-                              Present
-                            {% endif %}
-
+            {% if jobs is defined and jobs %}
+              <div class="company-block">
+                <h3 class="company-name">Jobs</h3>
+                {% for company in jobs|reverse %}
+                  <div class="exp-item">
+                    <h4>{{ company.name }}</h4>
+                    {% for station in company.stations|sort(attribute='start_year', reverse=True) %}
+                      <p class="muted">
+                        {% set sy = station.start_year %}
+                        {% set ey = station.end_year %}
+                        {% if sy or ey %}
+                          {{ sy }} - 
+                          {% if ey is not none %}
+                            {{ ey }}
+                          {% else %}
+                            Present
                           {% endif %}
-                        </p>
-                        <p>
-                          {% set acts = station.get('activities') %}
-
-                          {% if acts %}
-                            {% if acts is string %}
-                              {{ acts }}
-                            {% elif acts is sequence %}
-                              {{ acts | join(', ') }}
-                            {% else %}
-                              {{ acts }}
-                            {% endif %}
-                          {% endif %}
-                        </p>
-                      </div>
+                        {% endif %}
+                      </p>
+                      <p><strong>{{ station.role }}</strong></p>
+                      {% if station.activities %}
+                        <p>{{ station.activities }}</p>
+                      {% endif %}
                     {% endfor %}
                   </div>
-              
                 {% endfor %}
+              </div>
+            {% endif %}
+
+            {% if education is defined and education %}
+              <div class="company-block">
+                <h3 class="company-name">Education</h3>
+                {% for company in education|reverse %}
+                  <div class="exp-item">
+                    <h4>{{ company.name }}</h4>
+                    {% for station in company.stations|sort(attribute='start_year', reverse=True) %}
+                      <p class="muted">
+                        {% set sy = station.start_year %}
+                        {% set ey = station.end_year %}
+                        {% if sy or ey %}
+                          {{ sy }} - 
+                          {% if ey is not none %}
+                            {{ ey }}
+                          {% else %}
+                            Present
+                          {% endif %}
+                        {% endif %}
+                      </p>
+                      <p><strong>{{ station.role }}</strong></p>
+                      {% if station.activities %}
+                        <p>{{ station.activities }}</p>
+                      {% endif %}
+                    {% endfor %}
+                  </div>
+                {% endfor %}
+              </div>
             {% endif %}
           </div>
         </div>

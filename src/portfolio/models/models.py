@@ -1,11 +1,13 @@
 from pathlib import Path
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, Field, field_validator
 
 
 class Location(BaseModel):
+    street: str | None = None
+    house_number: str | None = None
     city: str
-    postal_code: str | int
-    country: str
+    postal_code: str | int | None = None
+    country: str | None = None
 
 
 class Contact(BaseModel):
@@ -50,9 +52,11 @@ class Portfolio(BaseModel):
     links: list[Link]
     skills: list[Skill]
     projects: list[Project]
-    cv: list[Company]
+    education: list[Company] = Field(default_factory=list)
+    jobs: list[Company] = Field(default_factory=list)
 
     @field_validator("image_url")
     def convert_image(cls, v):
         if isinstance(v, str):
             return Path(v)
+        return v

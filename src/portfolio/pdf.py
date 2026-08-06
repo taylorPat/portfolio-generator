@@ -133,7 +133,8 @@ def create_styles(theme: PdfTheme):
             parent=base["Normal"],
             fontSize=BODY_SIZE,
             textColor=theme.left_text,
-            spaceAfter=4,
+            spaceAfter=1,
+            leading=BODY_SIZE + 1,
         ),
         "body_right": ParagraphStyle(
             "body_right",
@@ -250,13 +251,23 @@ def create_pdf(
 
     story.append(Paragraph("Contact", S["header_left"]))
     story.append(Paragraph(portfolio.contact.email, S["body_left"]))
+    story.append(Spacer(1, 6))
+    story.append(Paragraph(portfolio.name, S["body_left"]))
 
     loc = portfolio.contact.location
-    story.append(
-        Paragraph(f"{loc.city}, {loc.postal_code}, {loc.country}", S["body_left"])
-    )
+    if loc.street or loc.house_number:
+        street_line = " ".join(
+            part for part in [loc.street, loc.house_number] if part
+        )
+        story.append(Paragraph(street_line, S["body_left"]))
+    if loc.postal_code:
+        story.append(Paragraph(str(loc.postal_code), S["body_left"]))
+    if loc.city:
+        story.append(Paragraph(loc.city, S["body_left"]))
+    if loc.country:
+        story.append(Paragraph(loc.country, S["body_left"]))
 
-    story.append(Spacer(1, 10))
+    story.append(Spacer(1, 4))
 
     if portfolio.links:
         story.append(Paragraph("Links", S["header_left"]))
@@ -265,8 +276,37 @@ def create_pdf(
 
     story.append(Spacer(1, 10))
 
+    story.append(Paragraph("Experience", S["header_left"]))
+    if portfolio.jobs:
+        for company in portfolio.jobs:
+            story.append(Paragraph(company.name, S["body_left"]))
+            for station in sorted(company.stations, key=lambda item: item.start_year, reverse=True):
+                years = f"{station.start_year}–{station.end_year or 'Present'}"
+                story.append(
+                    Paragraph(
+                        f"<b>{station.role}</b> ({years})",
+                        S["small_left"],
+                    )
+                )
+    else:
+        story.append(Paragraph("No experience added yet.", S["small_left"]))
+
+    story.append(Spacer(1, 10))
+
     story.append(Paragraph("Education", S["header_left"]))
-    story.append(Paragraph("Add education here", S["small_left"]))
+    if portfolio.education:
+        for company in reversed(portfolio.education):
+            story.append(Paragraph(company.name, S["body_left"]))
+            for station in sorted(company.stations, key=lambda item: item.start_year, reverse=True):
+                years = f"{station.start_year}–{station.end_year or 'Present'}"
+                story.append(
+                    Paragraph(
+                        f"<b>{station.role}</b> ({years})",
+                        S["small_left"],
+                    )
+                )
+    else:
+        story.append(Paragraph("No education added yet.", S["small_left"]))
 
     story.append(FrameBreak())
 
@@ -278,21 +318,6 @@ def create_pdf(
 
     story.append(Paragraph("About", S["header_right"]))
     story.append(Paragraph(portfolio.about, S["body_right"]))
-
-    story.append(Paragraph("Experience", S["header_right"]))
-
-    for company in portfolio.cv:
-        story.append(Paragraph(company.name, S["body_right"]))
-
-        for station in company.stations:
-            years = f"{station.start_year}–{station.end_year or 'Present'}"
-
-            story.append(
-                Paragraph(
-                    f"<b>{station.role}</b> ({years})<br/>{station.activities}",
-                    S["small_right"],
-                )
-            )
 
     story.append(Spacer(1, 10))
 
