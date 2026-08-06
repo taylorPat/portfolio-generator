@@ -118,46 +118,85 @@
         <div class="tab-panel plain-panel" id="cv" style="display:none">
           <div class="experience-list">
             {% if cv is defined %}
-
-                {% for company in cv %}
-                  <div class="company-block">
-                    <h3 class="company-name">{{ company.company }}</h3>
-                    {% for station in company.stations %}
-                      <div class="exp-item">
-                        <h4>
-                          {{ station.get('role') }}
-                        </h4>
-                        <p class="muted">
-                          {% set sy = station.get('start_year') %}
-                          {% set ey = station.get('end_year') %}
-                          {% if sy or ey %}
-                            {{ sy }} - 
-                            {% if ey is not none %}
-                              {{ ey }}
-                            {% else %}
-                              Present
+              {% if cv.jobs is defined and cv.jobs %}
+                <section class="section-block">
+                  <h3>Experience</h3>
+                  {% for company in cv.jobs %}
+                    <div class="company-block">
+                      <h4 class="company-name">{{ company.name }}</h4>
+                      {% for station in company.stations %}
+                        <div class="exp-item">
+                          <h5>{{ station.get('role') }}</h5>
+                          <p class="muted">
+                            {% set sy = station.get('start_year') %}
+                            {% set ey = station.get('end_year') %}
+                            {% if sy or ey %}
+                              {{ sy }} - 
+                              {% if ey is not none %}
+                                {{ ey }}
+                              {% else %}
+                                Present
+                              {% endif %}
                             {% endif %}
-
-                          {% endif %}
-                        </p>
-                        <p>
-                          {% set acts = station.get('activities') %}
-
-                          {% if acts %}
-                            {% if acts is string %}
-                              {{ acts }}
-                            {% elif acts is sequence %}
-                              {{ acts | join(', ') }}
-                            {% else %}
-                              {{ acts }}
+                          </p>
+                          <p>
+                            {% set acts = station.get('activities') %}
+                            {% if acts %}
+                              {% if acts is string %}
+                                {{ acts }}
+                              {% elif acts is sequence %}
+                                {{ acts | join(', ') }}
+                              {% else %}
+                                {{ acts }}
+                              {% endif %}
                             {% endif %}
-                          {% endif %}
-                        </p>
-                      </div>
-                    {% endfor %}
-                  </div>
-              
-                {% endfor %}
+                          </p>
+                        </div>
+                      {% endfor %}
+                    </div>
+                  {% endfor %}
+                </section>
+              {% endif %}
+
+              {% if cv.education is defined and cv.education %}
+                <section class="section-block">
+                  <h3>Education</h3>
+                  {% for company in cv.education %}
+                    <div class="company-block">
+                      <h4 class="company-name">{{ company.name }}</h4>
+                      {% for station in company.stations %}
+                        <div class="exp-item">
+                          <h5>{{ station.get('role') }}</h5>
+                          <p class="muted">
+                            {% set sy = station.get('start_year') %}
+                            {% set ey = station.get('end_year') %}
+                            {% if sy or ey %}
+                              {{ sy }} - 
+                              {% if ey is not none %}
+                                {{ ey }}
+                              {% else %}
+                                Present
+                              {% endif %}
+                            {% endif %}
+                          </p>
+                          <p>
+                            {% set acts = station.get('activities') %}
+                            {% if acts %}
+                              {% if acts is string %}
+                                {{ acts }}
+                              {% elif acts is sequence %}
+                                {{ acts | join(', ') }}
+                              {% else %}
+                                {{ acts }}
+                              {% endif %}
+                            {% endif %}
+                          </p>
+                        </div>
+                      {% endfor %}
+                    </div>
+                  {% endfor %}
+                </section>
+              {% endif %}
             {% endif %}
           </div>
         </div>

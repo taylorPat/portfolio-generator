@@ -265,8 +265,19 @@ def create_pdf(
 
     story.append(Spacer(1, 10))
 
-    story.append(Paragraph("Education", S["header_left"]))
-    story.append(Paragraph("Add education here", S["small_left"]))
+    if portfolio.cv and portfolio.cv.education:
+        story.append(Paragraph("Education", S["header_left"]))
+        for company in portfolio.cv.education:
+            story.append(Paragraph(company.name, S["body_left"]))
+            for station in company.stations:
+                years = f"{station.start_year}–{station.end_year or 'Present'}"
+                story.append(
+                    Paragraph(
+                        f"<b>{station.role}</b> ({years})<br/>{station.activities}",
+                        S["small_left"],
+                    )
+                )
+        story.append(Spacer(1, 10))
 
     story.append(FrameBreak())
 
@@ -281,18 +292,19 @@ def create_pdf(
 
     story.append(Paragraph("Experience", S["header_right"]))
 
-    for company in portfolio.cv:
-        story.append(Paragraph(company.name, S["body_right"]))
+    if portfolio.cv and portfolio.cv.jobs:
+        for company in portfolio.cv.jobs:
+            story.append(Paragraph(company.name, S["body_right"]))
 
-        for station in company.stations:
-            years = f"{station.start_year}–{station.end_year or 'Present'}"
+            for station in company.stations:
+                years = f"{station.start_year}–{station.end_year or 'Present'}"
 
-            story.append(
-                Paragraph(
-                    f"<b>{station.role}</b> ({years})<br/>{station.activities}",
-                    S["small_right"],
+                story.append(
+                    Paragraph(
+                        f"<b>{station.role}</b> ({years})<br/>{station.activities}",
+                        S["small_right"],
+                    )
                 )
-            )
 
     story.append(Spacer(1, 10))
 

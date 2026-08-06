@@ -1,5 +1,5 @@
 from portfolio import Portfolio, Contact, Location, Link, Skill
-from portfolio.pdf import build_portfolio_pdf
+from portfolio.pdf import create_pdf
 
 
 portfolio = Portfolio(
@@ -39,8 +39,8 @@ portfolio = Portfolio(
         ),
     ],
     projects=[],
-    cv=[],
+    cv={"jobs": [], "education": []},
 )
 
 if __name__ == "__main__":
-    build_portfolio_pdf(portfolio, "portfolio.pdf")
+    create_pdf(portfolio, "portfolio.pdf")

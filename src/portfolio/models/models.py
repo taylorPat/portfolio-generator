@@ -1,5 +1,5 @@
 from pathlib import Path
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, Field, field_validator
 
 
 class Location(BaseModel):
@@ -41,6 +41,11 @@ class Company(BaseModel):
     stations: list[Station]
 
 
+class CV(BaseModel):
+    jobs: list[Company] = Field(default_factory=list)
+    education: list[Company] = Field(default_factory=list)
+
+
 class Portfolio(BaseModel):
     name: str
     job_title: str
@@ -50,7 +55,13 @@ class Portfolio(BaseModel):
     links: list[Link]
     skills: list[Skill]
     projects: list[Project]
-    cv: list[Company]
+    cv: CV
+
+    @field_validator("cv", mode="before")
+    def normalize_cv(cls, v):
+        if isinstance(v, list):
+            return {"jobs": v, "education": []}
+        return v
 
     @field_validator("image_url")
     def convert_image(cls, v):
