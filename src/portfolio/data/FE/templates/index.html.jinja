@@ -7,43 +7,43 @@
 
 <div class="landing-split">
   <aside class="left-panel">
-    <div class="left-inner">
-      <div class="profile-avatar-wrap">
-        {% if image_url %}
-          <img class="profile-avatar" src="{{ image_url }}" alt="{{ name }}" />
-          {% else %}
-          <img class="profile-avatar" src="static/default-avatar.svg" alt="{{ name }}" />
-        {% endif %}
+    <div class="left-content">
+      <div class="profile-intro">
+        <div class="profile-summary">
+          {% if image_url %}
+            <img class="profile-avatar" src="{{ image_url }}" alt="{{ name }}" />
+          {% endif %}
+          <h1>{{ name }}</h1>
+          <h3 class="muted">{{ job_title }}</h3>
+          <p class="about">{{ about }}</p>
+        </div>
       </div>
 
-      <h1>{{ name }}</h1>
-      <h3 class="muted">{{ job_title }}</h3>
-      <p class="about">{{ about }}</p>
-
       <div class="contact-block">
-        {% if contact is defined and contact.email is defined %}
-          <p><strong>Email:</strong> <a href="mailto:{{ contact.email }}">{{ contact.email }}</a></p>
-        {% endif %}
-        {% if contact is defined %}
-          {% if contact.location is defined %}
-          <p><strong>Location:</strong> 
-            {% if contact.location.city is defined %}
-              {{ contact.location.city }}
-            {% endif %}
-            {% if contact.location.country is defined %}
-              {% if contact.location.city is defined %}, {% endif %}
-              {{ contact.location.country }}
-            {% endif %}
+        {% set email = contact.email if contact is defined and contact is not none and contact.email is defined and contact.email else None %}
+        {% set location_city = contact.location.city if contact is defined and contact is not none and contact.location is defined and contact.location.city is defined and contact.location.city else '' %}
+        {% set location_country = contact.location.country if contact is defined and contact is not none and contact.location is defined and contact.location.country is defined and contact.location.country else '' %}
+
+        {% if email %}
+          <p class="contact-line">
+            <span class="contact-label">Email</span>
+            <a class="contact-link" href="mailto:{{ email }}">{{ email }}</a>
           </p>
-          {% endif %}
+        {% endif %}
+
+        {% if location_city or location_country %}
+          <p class="contact-line">
+            <span class="contact-label">Location</span>
+            <span class="contact-value">{% if location_city %}{{ location_city }}{% endif %}{% if location_city and location_country %}, {% endif %}{% if location_country %}{{ location_country }}{% endif %}</span>
+          </p>
         {% endif %}
 
         {% if links is defined %}
-        <p class="profile-links">
+        <div class="profile-links">
           {% for link in links %}
             <a class="btn small" href="{{ link.url }}" target="_blank" rel="noopener">{{ link.name | replace('_',' ') | title }}</a>
           {% endfor %}
-        </p>
+        </div>
         {% endif %}
       </div>
     </div>
@@ -53,7 +53,7 @@
 
   <section class="right-panel">
     <div class="tabs">
-      <nav class="tabs-nav">
+      <nav class="tabs-nav" aria-label="Portfolio sections">
         <button class="tab-btn active" data-tab="skills">Core skills</button>
         <button class="tab-btn" data-tab="projects">Projects</button>
         <button class="tab-btn" data-tab="cv">CV / Experience</button>
@@ -88,26 +88,24 @@
         </div>
 
         <div class="tab-panel projects-panel" id="projects" style="display:none">
-          <div class="projects-list">
+          <div class="skills-columns">
             {% if projects is defined %}
               {% for project in projects %}
-              <article class="proj-item">
-                <h3 class="proj-title">{{ project.name }}</h3>
-
-                <div class="proj-actions">
+              <div class="skill-section project-section">
+                <div class="project-header">
+                  <h4>{{ project.name }}</h4>
                   {% if project.link is defined %}
                     <a class="proj-btn github" href="{{ project.link.url }}" target="_blank" rel="noopener">{{ project.link.name }}</a>
                   {% endif %}
                 </div>
-
-                <div class="proj-skills">
+                <div class="skill-items">
                   {% if project.attributes is defined %}
                     {% for attr in project.attributes %}
-                      <span class="proj-skill">{{ attr }}</span>
+                      <span class="skill-item" aria-hidden="true">{{ attr }}</span>
                     {% endfor %}
                   {% endif %}
                 </div>
-              </article>
+              </div>
               {% endfor %}
             {% endif %}
           </div>
@@ -122,22 +120,24 @@
                   <div class="exp-item">
                     <h4>{{ company.name }}</h4>
                     {% for station in company.stations|sort(attribute='start_year', reverse=True) %}
-                      <p class="muted">
-                        {% set sy = station.start_year %}
-                        {% set ey = station.end_year %}
-                        {% if sy or ey %}
-                          {{ sy }} - 
-                          {% if ey is not none %}
-                            {{ ey }}
-                          {% else %}
-                            Present
+                      <div class="exp-entry">
+                        <p class="muted">
+                          {% set sy = station.start_year %}
+                          {% set ey = station.end_year %}
+                          {% if sy or ey %}
+                            {{ sy }} - 
+                            {% if ey is not none %}
+                              {{ ey }}
+                            {% else %}
+                              Present
+                            {% endif %}
                           {% endif %}
+                        </p>
+                        <p><strong>{{ station.role }}</strong></p>
+                        {% if station.activities %}
+                          <p>{{ station.activities }}</p>
                         {% endif %}
-                      </p>
-                      <p><strong>{{ station.role }}</strong></p>
-                      {% if station.activities %}
-                        <p>{{ station.activities }}</p>
-                      {% endif %}
+                      </div>
                     {% endfor %}
                   </div>
                 {% endfor %}
@@ -151,22 +151,24 @@
                   <div class="exp-item">
                     <h4>{{ company.name }}</h4>
                     {% for station in company.stations|sort(attribute='start_year', reverse=True) %}
-                      <p class="muted">
-                        {% set sy = station.start_year %}
-                        {% set ey = station.end_year %}
-                        {% if sy or ey %}
-                          {{ sy }} - 
-                          {% if ey is not none %}
-                            {{ ey }}
-                          {% else %}
-                            Present
+                      <div class="exp-entry">
+                        <p class="muted">
+                          {% set sy = station.start_year %}
+                          {% set ey = station.end_year %}
+                          {% if sy or ey %}
+                            {{ sy }} - 
+                            {% if ey is not none %}
+                              {{ ey }}
+                            {% else %}
+                              Present
+                            {% endif %}
                           {% endif %}
+                        </p>
+                        <p><strong>{{ station.role }}</strong></p>
+                        {% if station.activities %}
+                          <p>{{ station.activities }}</p>
                         {% endif %}
-                      </p>
-                      <p><strong>{{ station.role }}</strong></p>
-                      {% if station.activities %}
-                        <p>{{ station.activities }}</p>
-                      {% endif %}
+                      </div>
                     {% endfor %}
                   </div>
                 {% endfor %}
